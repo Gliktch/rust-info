@@ -7,8 +7,9 @@ function PLUGIN:Init()
   print("Loading Server Information mod...")
   self:AddChatCommand( "info", self.cmdInfo )
   self:CollectValues()
-  if (infotimer) then infotimer:Destroy() end
-  infotimer = timer.Repeat( 15, self.CollectValues )
+--  if (infotimer) then infotimer:Destroy() end
+--  infotimer = timer.Repeat( 15, self.CollectValues )
+  timer.Repeat( 15, self.CollectValues )
 end
 
 function PLUGIN:CollectValues()
@@ -45,7 +46,21 @@ function PLUGIN:CollectValues()
   legstime = Rust.falldamage.injury_length
   locktime = Rust.player.backpackLockTime
   autotime = Rust.save.autosavetime
-  
+
+  if ((not hostip) or (hostip == "")) then
+      local url = "http://ifconfig.me/ip"
+      local request = webrequest.Send(url, function(code, response)
+      -- Check for HTTP success
+      if (code == 200) then
+          hostip = response
+          -- if self.Config.verbose then
+          print("Server Information: External IP detected as " .. tostring(response))
+          -- end
+      else
+          error("Server Information: Failed to retrieve external IP (Error " .. tostring(code) .. ").")
+      end
+  end
+
 end
 
 function PLUGIN:toboolean(var)
@@ -76,5 +91,5 @@ function PLUGIN:cmdInfo( netuser, args )
 end
 
 function PLUGIN:SendHelpText( netuser )
-	rust.SendChatToUser( netuser, "Use /info to list the details and basic settings of this server." )
+    rust.SendChatToUser( netuser, "Use /info to list the details and basic settings of this server." )
 end
