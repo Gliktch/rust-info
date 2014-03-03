@@ -1,15 +1,15 @@
 PLUGIN.Title = "Server Information"
 PLUGIN.Author = "Gliktch"
-PLUGIN.Version = "0.5"
+PLUGIN.Version = "0.6"
 PLUGIN.Description = "Displays basic information about the server, including hostname, ip:port and common server settings."
+PLUGIN.ResourceID = "322"
 
 function PLUGIN:Init()
   print("Loading Server Information mod...")
   self:AddChatCommand( "info", self.cmdInfo )
   self:CollectValues()
---  if (infotimer) then infotimer:Destroy() end
---  infotimer = timer.Repeat( 15, self.CollectValues )
-  timer.Repeat( 15, self.CollectValues )
+  if (infotimer) then infotimer:Destroy() end
+  infotimer = timer.Repeat( 15, self.CollectValues )
 end
 
 function PLUGIN:CollectValues()
@@ -59,15 +59,15 @@ function PLUGIN:CollectValues()
       else
           error("Server Information: Failed to retrieve external IP (Error " .. tostring(code) .. ").")
       end
+      end)
   end
-
 end
 
-function PLUGIN:toboolean(var)
+function toboolean(var)
   return not not var
 end
 
-function PLUGIN:round(num, dec)
+function round(num, dec)
   local pow = 10^(dec or 0)
   return math.floor(num * pow + 0.5) / pow
 end
