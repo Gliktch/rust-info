@@ -1,13 +1,12 @@
 PLUGIN.Title = "Server Information"
 PLUGIN.Author = "Gliktch"
-PLUGIN.Version = "0.6"
+PLUGIN.Version = "0.7"
 PLUGIN.Description = "Displays basic information about the server, including hostname, ip:port and common server settings."
 PLUGIN.ResourceID = "322"
 
 function PLUGIN:Init()
   print("Loading Server Information mod...")
   self:AddChatCommand( "info", self.cmdInfo )
-  self:CollectValues()
   if (infotimer) then infotimer:Destroy() end
   infotimer = timer.Repeat( 15, self.CollectValues )
 end
